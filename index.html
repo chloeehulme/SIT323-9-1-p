@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+</head>
+
+<body>
+    <div class="container">
+        <form id="calculatorForm">
+            <header>
+                <h2>Enter numbers below: </h2>
+            </header>
+        
+            <div class="input">
+                <input type="text" class="form-control" id="num1">
+            </div>
+            <div class="input">
+                <input type="text" class="form-control" id="num2">
+            </div>
+            <div class="input">
+                <select id="operationSelect" name="operation" onchange="updateSecondInput()">
+                    <option value="/addition">Addition</option>
+                    <option value="/subtraction">Subtraction</option>
+                    <option value="/multiplication">Multiplication</option>
+                    <option value="/division">Division</option>
+                    <option value="/exponent">Exponent</option>
+                    <option value="/sqrroot">Square root</option>
+                    <option value="/modulo">Modulo</option>
+                </select>
+            </div>
+            <div class="button">
+                <button type="button" onclick="calculate()">Calculate</button>
+            </div>
+        
+            <p id="disp"></p>
+        </form>
+    </div>
+
+    <script>
+        // Requests selected calculation from server
+        function calculate() {
+            var url = document.getElementById("operationSelect").value;
+            var num1 = document.getElementById("num1").value;
+            var num2 = document.getElementById("num2").value;
+
+            var requestData = {
+                num1: num1,
+                num2: num2
+            };
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.text())
+            .then(result => {
+                document.getElementById("disp").innerText = "Result: " + result;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Disables second input field if user selects square root calculation
+        function updateSecondInput() {
+            var operationSelect = document.getElementById('operationSelect');
+            var num2Input = document.getElementById('num2');
+
+            if (operationSelect.value === '/sqrroot') {
+                num2Input.disabled = true;
+            } else {
+                num2Input.disabled = false;
+            }
+        }
+    </script>
+
+</body>
+</html>

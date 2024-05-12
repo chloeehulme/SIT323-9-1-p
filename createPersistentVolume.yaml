@@ -7,6 +7,13 @@ spec:
     storage: 1Gi
   accessModes:
     - ReadWriteMany
-  storageClassName: demo-storage
-  hostPath:
-    path: /run/desktop/mnt/host/Users/chloehulme/Desktop/Week-9/MappedFolder
+  local:
+    path: /run/desktop/mnt/host/C/Users/fala0014/Downloads/Deakin-SIT323-2024/Week-7/MyMappedFolder
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - docker-desktop

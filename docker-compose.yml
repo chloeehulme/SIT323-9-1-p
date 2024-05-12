@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  web-app:
+    image: docker.io/chloehulme/sit323-2024-t1-prac4c-web-app 
+    container_name: 5-1-P-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3007:3007"
+    volumes:
+      - ./html:/app/html
